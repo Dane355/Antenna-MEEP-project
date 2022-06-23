@@ -20,10 +20,10 @@ cell_zmin = zmin_bottom - height
 cell_zmax = zmax_top + height
 epsilon_horn = mp.metal
 bottom = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, bottom_layer, zmin_bottom, zmax_bottom)
-sides = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, side_layer, zmin_sides, zmax_sides)[mp.Source(mp.CustomSource(src_func=0), component=mp.Ex, center=mp.Vector3(0, 0, 0), size=mp.Vector3(0, 1, 0))]
+sides = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, side_layer, zmin_sides, zmax_sides)
 top = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, top_layer, zmin_top, zmax_top)
 geometry = bottom + sides + top
-sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(-5,0), size=mp.Vector3(0,1))], [mp.Source(mp.CustomSource(src_func=0), component=mp.Ex, center=mp.Vector3(-5, 0, 0), size=mp.Vector3(0, 1, 0))] 
+sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(-5,0), size=mp.Vector3(0,0.9))] 
 sim = mp.Simulation(resolution=10, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, sources=sources)
 sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ez", mp.at_every(0.6, mp.output_efield_z)), until=50)
 #set z to 75 when on terminal
