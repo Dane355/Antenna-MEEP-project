@@ -1,26 +1,26 @@
->>> cell = mp.Vector3(15,15,15)
->>> pml_layers = [mp.PML(0.25)]
->>> gdsIIfile = 'horn_layout.gds'
->>> bottom_layer = 1
->>> side_layer = 2
->>> top_layer = 3
->>> cell_layer = 4
->>> thickness = 0.2
->>> height = 0.95
->>> zmin_bottom = -1.2
->>> zmax_bottom = zmin_bottom + thickness
->>> zmin_sides = zmin_bottom
->>> zmax_sides = zmin_bottom + height
->>> zmin_top = zmax_sides - thickness
->>> zmax_top = zmax_sides
->>> cell_zmin = zmin_bottom - height
->>> cell_zmax = zmax_top + height
->>> epsilon_horn = mp.metal
->>> bottom = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, bottom_layer, zmin_bottom, zmax_bottom)
->>> sides = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, side_layer, zmin_sides, zmax_sides)
->>> top = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, top_layer, zmin_top, zmax_top)
->>> geometry = bottom + sides + top
->>> sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20),
-...                      component=mp.Ez,
-...                      center=mp.Vector3(1,0),
-...                      size=mp.Vector3(0,1))]
+cell = mp.Vector3(15,15,15)
+pml_layers = [mp.PML(0.25)]
+gdsIIfile = 'horn_layout.gds'
+bottom_layer = 1
+side_layer = 2
+top_layer = 3
+cell_layer = 4
+thickness = 0.2
+height = 0.95
+zmin_bottom = -1.2
+zmax_bottom = zmin_bottom + thickness
+zmin_sides = zmin_bottom
+zmax_sides = zmin_bottom + height
+zmin_top = zmax_sides - thickness
+zmax_top = zmax_sides
+cell_zmin = zmin_bottom - height
+cell_zmax = zmax_top + height
+epsilon_horn = mp.metal
+bottom = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, bottom_layer, zmin_bottom, zmax_bottom)
+sides = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, side_layer, zmin_sides, zmax_sides)[mp.Source(mp.CustomSource(src_func=0), component=mp.Ex, center=mp.Vector3(0, 0, 0), size=mp.Vector3(0, 1, 0))]
+top = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, top_layer, zmin_top, zmax_top)
+geometry = bottom + sides + top
+sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(-5,0), size=mp.Vector3(0,1))], [mp.Source(mp.CustomSource(src_func=0), component=mp.Ex, center=mp.Vector3(-5, 0, 0), size=mp.Vector3(0, 1, 0))] 
+sim = mp.Simulation(resolution=10, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, sources=sources)
+sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ez", mp.at_every(0.6, mp.output_efield_z)), until=50)
+#set z to 75 when on terminal
