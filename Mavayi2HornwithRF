@@ -1,7 +1,7 @@
 from __future__ import division
 import meep as mp
 
-cell = mp.Vector3(15,15,15)
+cell = mp.Vector3(20,20,20)
 pml_layers = [mp.PML(0.25)]
 gdsIIfile = 'horn_layout.gds'
 bottom_layer = 1
@@ -23,7 +23,7 @@ bottom = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, bottom_layer, zmin_bottom,
 sides = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, side_layer, zmin_sides, zmax_sides)
 top = mp.get_GDSII_prisms(epsilon_horn, gdsIIfile, top_layer, zmin_top, zmax_top)
 geometry = bottom + sides + top
-sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(-5,0), size=mp.Vector3(0,0.9))] 
-sim = mp.Simulation(resolution=10, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, geometry_center=mp.Vector3(-5,0,0), sources=sources)
-sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ez", mp.at_every(0.6, mp.output_efield_z)), until=50)
+sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(1,0), size=mp.Vector3(0,0.9))] 
+sim = mp.Simulation(resolution=10, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, geometry_center=mp.Vector3(10,0,0), sources=sources)
+sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ez", mp.at_every(0.6, mp.output_efield_z)), until=100)
 #set z to 75 when on terminal
