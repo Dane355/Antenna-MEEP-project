@@ -1,3 +1,6 @@
+from __future__ import division
+import meep as mp
+
 cell = mp.Vector3(15,15,15)
 pml_layers = [mp.PML(0.25)]
 gdsIIfile = 'horn_layout.gds'
