@@ -2,7 +2,7 @@ from __future__ import division
 import meep as mp
 
 cell = mp.Vector3(30,30,30)
-pml_layers = [mp.PML(0.25)]
+pml_layers = [mp.PML(1.0)]
 gdsIIfile = 'horn_layout.gds'
 bottom_layer = 1
 side_layer = 2
@@ -10,7 +10,7 @@ top_layer = 3
 cell_layer = 4
 plug_layer = 5
 thickness = 0.2
-height = 0.95
+height = 1.0
 zmin_bottom = -1.2
 zmax_bottom = zmin_bottom + thickness
 zmin_sides = zmin_bottom
@@ -33,10 +33,6 @@ sides[1].center += delta
 top[0].center += delta
 plug[0].center += delta
 geometry = bottom + sides + top + plug
-sources = [mp.Source(mp.ContinuousSource(wavelength=2*(11**0.5), width=20), component=mp.Ez, center=mp.Vector3(-8,0, -0.475), size=mp.Vector3(0,0.2375))] 
+sources = [mp.Source(mp.ContinuousSource(frequency=0.05, width=1.0), component=mp.Ey, center=mp.Vector3(-7.9,0,-0.725), size=mp.Vector3(0.0,0.2,0.0))] 
 sim = mp.Simulation(resolution=10, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, sources=sources)
-sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ez", mp.at_every(0.6, mp.output_efield_z)), until=100)
-#set z to 150 when on terminal
-#In terminal
-h5topng -t 0:100 -z 150 -R -Zc dkbluered -a yarg -m -0.0001 -M 0.0001 mayavi2-ez.h5
-convert mayavi2-ez.t*.png 3dhorn#.gif
+sim.run(mp.at_beginning(mp.output_epsilon), mp.to_appended("ey", mp.at_every(0.5, mp.output_efield_y)), until=50)
