@@ -35,6 +35,6 @@ geometry = bottom + sides + top + plug
 sources = [mp.Source(src=mp.GaussianSource(fcen,fwidth=df), center=mp.Vector3(), component=src_cmpt), mp.Source(mp.ContinuousSource(frequency=0.05,width=1.0), component= mp.Ey, center=mp.Vector3(1,0), size=mp.Vector3(0.0,0.2))]
 sim = mp.Simulation(resolution=resolution, cell_size=cell, boundary_layers=pml_layers, geometry=geometry, sources=sources, symmetries=symmetries)
 nearfield_box = sim.add_near2far(fcen, 0, 1, mp.Near2FarRegion(center=mp.Vector3(0,+0.5*sxy), size=mp.Vector3(sxy,0)), mp.Near2FarRegion(center=mp.Vector3(0,-0.5*sxy), size=mp.Vector3(sxy,0), weight=-1), mp.Near2FarRegion(center=mp.Vector3(+0.5*sxy,0), size=mp.Vector3(0,sxy)), mp.Near2FarRegion(center=mp.Vector3(-0.5*sxy,0), size=mp.Vector3(0,sxy), weight=-1))
-sim.run(mp.to_appended("ey",mp.at_every(0.5,mp.out_efield_y)),until=50)
+sim.run(mp.to_appended("ey",mp.at_every(0.5,mp.output_efield_y)),until=50)
 
 #creates gif with only 2 pulsating points with little signs of wave propogations, no horn in sight
