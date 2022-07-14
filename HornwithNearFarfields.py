@@ -12,14 +12,14 @@ pml_layers = [mp.PML(dpml)]
 fcen = 0.1
 df = 0.075
 src_cmpt = mp.Ey
-gdsIIfile = 'horn_layout.gds'
+gdsIIfile = 'horn_layout2.gds'
 bottom_layer = 1
 side_layer = 2
 top_layer = 3
 cell_layer = 4
 plug_layer = 5
 thickness = 0.2
-height = 1.0
+height = 1.4
 zmin_bottom = -1.2
 zmax_bottom = zmin_bottom + thickness
 zmin_sides = zmin_bottom
@@ -41,7 +41,7 @@ sides[0].center += delta
 sides[1].center += delta
 plug[0].center += delta
 geometry = sides + plug + bottom + top
-sources = [mp.Source(src=mp.GaussianSource(fcen,fwidth=df),center=mp.Vector3(-7,0,0),component=src_cmpt,size=mp.Vector3(0.0,0.2,0.0))]
+sources = [mp.Source(src=mp.GaussianSource(fcen,fwidth=df),center=mp.Vector3(-7,0,-0.6),component=src_cmpt,size=mp.Vector3(0.0,0.2,0.0))]
 sim = mp.Simulation(resolution=resolution,cell_size=cell,boundary_layers=pml_layers,geometry=geometry,sources=sources)
 nearfield_box = sim.add_near2far(
     fcen,
